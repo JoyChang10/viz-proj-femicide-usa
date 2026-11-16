@@ -21,7 +21,7 @@ npm run build
 npm run preview
 ```
 
-`dist/` is the deployable static site. Vite uses a relative base URL so it can be hosted in a subdirectory. No server, database, credential, or geocoding API is needed in production. See the repository README for Cloudflare Pages build settings. Only serve `dist/` online, never the parent dataset directory. For local development Vite binds to loopback.
+`dist/` is the deployable static site. Vite uses a relative base URL so it can be hosted in a subdirectory. No server, database, credential, or geocoding API is needed in production. See the repository README for the current Cloudflare Workers deployment and alternative Pages build settings. Only serve `dist/` online, never the parent dataset directory. For local development Vite binds to loopback.
 
 ## Phase 3 individual victims
 

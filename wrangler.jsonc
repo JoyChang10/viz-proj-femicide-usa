@@ -1,0 +1,11 @@
+{
+  "name": "viz-proj-women-count",
+  "compatibility_date": "2026-11-13",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./web/dist"
+  },
+  "build": {
+    "command": "npm --prefix web run build"
+  }
+}
