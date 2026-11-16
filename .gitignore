@@ -1,0 +1,15 @@
+# Original exports remain local. Only the website's prepared public data is published.
+/airtable_export/
+/web/data/
+
+# Local credentials, tools, build output, and test artifacts.
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.wrangler/
+*.log
+__pycache__/
+.DS_Store
+Thumbs.db
