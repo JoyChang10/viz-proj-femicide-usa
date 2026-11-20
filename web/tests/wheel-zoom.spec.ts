@@ -27,7 +27,8 @@ async function viewAt(page: Page, x: number, y: number) {
 
 test('small trackpad-style deltas change zoom gradually and keep the cursor location anchored', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('path[data-level=state]').first()).toBeVisible()
+  await page.getByLabel('Choose a state or territory').selectOption('48')
+  await expect(page.locator('path[data-level=county]').first()).toBeAttached()
   const box = (await page.locator('.city-map').boundingBox())!
   const x = box.x + box.width * 0.35
   const y = box.y + box.height * 0.42
@@ -53,7 +54,8 @@ test('small trackpad-style deltas change zoom gradually and keep the cursor loca
 
 test('coarse mouse-wheel pixel and line inputs remain usable; buttons and reset still work', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('path[data-level=state]').first()).toBeVisible()
+  await page.getByLabel('Choose a state or territory').selectOption('48')
+  await expect(page.locator('path[data-level=county]').first()).toBeAttached()
   const map = page.locator('.city-map')
   const box = (await map.boundingBox())!
   const x = box.x + box.width / 2
@@ -71,5 +73,5 @@ test('coarse mouse-wheel pixel and line inputs remain usable; buttons and reset 
   await page.getByRole('button', { name: 'Zoom in', exact: true }).click()
   expect((await viewAt(page, x, y)).zoom - beforeButton.zoom).toBeCloseTo(1, 2)
   await page.getByRole('button', { name: 'Reset Map' }).click()
-  await expect.poll(async () => (await viewAt(page, x, y)).zoom).toBeCloseTo(start.zoom, 2)
+  await expect(page.locator('.national-overview')).toBeVisible()
 })

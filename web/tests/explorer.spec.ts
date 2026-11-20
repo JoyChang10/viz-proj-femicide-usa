@@ -15,7 +15,7 @@ test('state and county choropleths use SHR totals, dynamic legends and distinct 
   expect(scale.color(0)).toBe(ZERO_COLOR)
   expect(scale.color(scale.min)).not.toBe(scale.color(scale.max))
   await page.goto('/')
-  await expect(page.locator('path[data-level=state]')).toHaveCount(geo.states.features.length)
+  await expect(page.locator('path[data-level=state]')).toHaveCount(geo.states.features.filter(f => Number(f.properties.fips) <= 56).length)
   await expect(page.locator('.single-city-marker,.case-cluster-marker')).toHaveCount(0)
   const tx = geo.states.features.find(f => f.properties.fips === '48')!
   await expect(page.locator('[data-area-fips="48"]')).toHaveAttribute('data-count', String(tx.properties.count))
@@ -40,7 +40,7 @@ test('state and county choropleths use SHR totals, dynamic legends and distinct 
   await page.getByRole('button',{name:'Texas counties',exact:true}).click()
   await expect(page.locator('.single-city-marker,.case-cluster-marker')).toHaveCount(0)
   await page.getByRole('button',{name:'All states',exact:true}).click()
-  await expect(page.locator('path[data-level=state]')).toHaveCount(geo.states.features.length)
+  await expect(page.locator('path[data-level=state]')).toHaveCount(geo.states.features.filter(f => Number(f.properties.fips) <= 56).length)
 })
 
 test('missing and zero counties remain distinguishable and FIPS stay exact', async ({ page }) => {

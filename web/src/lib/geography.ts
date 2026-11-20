@@ -15,7 +15,7 @@ export interface GeographyData {
   states: Areas
   cityCounty: Record<string, string>
 }
-export const MISSING_COLOR = '#dedde1'
+export const MISSING_COLOR = '#dedfdb'
 export const ZERO_COLOR = '#ffffff'
 export function createCountScale(features: AreaFeature[]) {
   const positive = features.flatMap(f => f.properties.count !== null && f.properties.count > 0 ? [f.properties.count] : [])
@@ -25,7 +25,7 @@ export function createCountScale(features: AreaFeature[]) {
     if (count === null) return MISSING_COLOR
     if (count === 0) return ZERO_COLOR
     const t = max === min ? 0.5 : Math.max(0, Math.min(1, (Math.sqrt(count) - Math.sqrt(min)) / (Math.sqrt(max) - Math.sqrt(min))))
-    return `hsl(275, 46%, ${94 - 62 * t}%)`
+    return `hsl(187, 72%, ${94 - 69 * t}%)`
   }
   return { min, max, color }
 }

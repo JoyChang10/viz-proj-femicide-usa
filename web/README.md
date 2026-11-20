@@ -33,9 +33,11 @@ failure leaves the prepared geographic and profile data available.
 
 ## Map and case navigation
 
-1. National view shades states. Hover for state name/count, then click a state
-   or use its dropdown to reveal counties.
-2. County shading uses the same purple palette, with a new scale calculated
+1. The fixed national view uses an Albers U.S. display projection with interactive
+   Alaska and Hawaii insets. It shows the 50 states and D.C. without a surrounding
+   world basemap. Hover for state name/count, then click a state or use its dropdown
+   to reveal counties. Territories remain available from the dropdown.
+2. County shading uses the same sequential cyan palette, with a new scale calculated
    from that state's actual positive counts. The legend shows the displayed
    level and endpoints. The square-root scale has no predefined count bins.
 3. Select a county to retain its shaded context and show its available Women
@@ -48,6 +50,16 @@ failure leaves the prepared geographic and profile data available.
    opens its profile directly. Every dot retains the original record ID.
 6. Close/Back/Escape restores the grid selection, focus, and scroll. Map position
    is retained. County/state navigation and Reset Map return to broader views.
+   National panning and zooming are disabled. State views keep Leaflet zoom/pan
+   within a padded state extent. A zoom-out step beyond the state overview returns
+   to the complete U.S. map. Alaska's antimeridian coordinates are normalized only
+   for display; original data and city coordinates remain unchanged.
+
+The restrained palette follows [Women Count USA](https://womencountusa.org/home):
+gold `#e7b70d` for accents and selection, turquoise/cyan quantitative shading,
+charcoal text and profile markers, and white/off-white backgrounds. Gold does
+not encode counts. The overview uses [D3's Albers U.S. projection](https://d3js.org/d3-geo/conic#geoAlbersUsa);
+Leaflet continues to render geographic county/case views at real locations.
 
 White means an observed zero. Gray means no reported data. Missing county-years
 are not filled with zero. County geography uses a consistent 2010 Census layer,

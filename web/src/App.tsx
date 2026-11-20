@@ -132,7 +132,7 @@ export default function App() {
       </div>
       <div className="explorer">
         <CityMap cities={data.cities} visibleCities={visibleCities} selectedCity={city} onSelect={selectCity} resetVersion={resetVersion}
-          areas={areas} state={state} county={county} onSelectArea={onSelectArea} years={years} />
+          areas={areas} nationalStates={geo.states} state={state} county={county} onSelectArea={onSelectArea} onNational={reset} years={years} />
         <aside className="explorer-sidebar" aria-label="Geographic statistics and individual profiles">
           {state && <nav className="geo-navigation" aria-label="Map navigation">
             <button onClick={reset}>All states</button>

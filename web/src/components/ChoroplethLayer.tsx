@@ -11,7 +11,7 @@ export function ChoroplethLayer({ areas, level, selectedCounty, onSelect }: {
   const scale = useMemo(() => createCountScale(areas.features), [areas])
   useEffect(() => {
     const layer = L.geoJSON(areas, {
-      style: feature => ({ color: feature?.properties.fips === selectedCounty ? '#30213d' : '#706278',
+      style: feature => ({ color: feature?.properties.fips === selectedCounty ? '#e7b70d' : '#586867',
         weight: feature?.properties.fips === selectedCounty ? 2.5 : level === 'state' ? 1 : 0.6,
         fillColor: scale.color(feature!.properties.count), fillOpacity: selectedCounty ? 0.30 : 0.78 }),
       onEachFeature: (feature, areaLayer) => {
@@ -21,7 +21,7 @@ export function ChoroplethLayer({ areas, level, selectedCounty, onSelect }: {
         tooltip.textContent = label
         areaLayer.bindTooltip(tooltip, { sticky: true })
         areaLayer.on({ click: () => onSelect(feature as AreaFeature),
-          mouseover: () => (areaLayer as L.Path).setStyle({ weight: 2, fillOpacity: selectedCounty ? 0.45 : 0.92 }),
+          mouseover: () => (areaLayer as L.Path).setStyle({ color: '#e7b70d', weight: 2.5, fillOpacity: selectedCounty ? 0.45 : 0.92 }),
           mouseout: () => layer.resetStyle(areaLayer as L.Path) })
         areaLayer.on('add', () => {
           const el = (areaLayer as L.Path).getElement()
