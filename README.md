@@ -1,7 +1,10 @@
 # Women Count geographic explorer
 
-An interactive U.S. map of documented Women Count USA cases. The application
-uses React, TypeScript, Vite, Leaflet, and Supercluster.
+An interactive U.S. state/county choropleth of reported female homicide victims
+with a recorded male offender (cleaned SHR, 1976–2024), with separate Women Count
+USA city grids and individual profiles. The application uses React, TypeScript,
+Vite, Leaflet, and Supercluster. See [SHR geography documentation](data/shr_geography/README.md)
+for processed files, official boundaries, and validation results.
 
 ## Local development
 

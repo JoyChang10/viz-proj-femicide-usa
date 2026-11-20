@@ -1,8 +1,10 @@
+import { chooseCity, revealCityCounty } from './helpers'
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import type { City, DataIndex, VictimCase } from '../src/types'
 
 const data = JSON.parse(readFileSync('public/data/index.json', 'utf8')) as DataIndex
+const geo = JSON.parse(readFileSync('public/data/shr/index.json', 'utf8'))
 const city = (label: string) => data.cities.find(c => c.label === label)!
 const single = city('Aberdeen, ID')
 const small = city('Carnation, WA')
@@ -15,7 +17,7 @@ function recordsFor(selected: City) {
 }
 
 async function choose(page: Page, selected: City) {
-  await page.getByLabel('Choose a city').selectOption(selected.id)
+  await chooseCity(page, selected)
   if (selected.caseCount === 1) await expect(page.getByTestId('victim-profile')).toBeVisible()
   else {
     await expect(page.locator('#city-title')).toHaveText(selected.label)
@@ -61,7 +63,7 @@ async function openEveryDot(page: Page) {
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
-  await expect(page.getByLabel('Choose a city')).toBeVisible()
+  await expect(page.getByLabel('Choose a state or territory')).toBeVisible()
 })
 
 test('one-case city opens its profile directly, closes reliably, and reopens from its city marker', async ({ page }) => {
@@ -91,7 +93,7 @@ for (const selected of [small, fifteen, large]) {
     expect(new Set(ids).size).toBe(selected.caseCount)
     // Individual victims never appear in the geographic map.
     await expect(page.locator('.city-map [data-case-id]')).toHaveCount(0)
-    await expect(page.locator('.city-map .leaflet-overlay-pane path')).toHaveCount(0)
+    await expect(page.locator(`.city-map [data-area-fips="${geo.cityCounty[selected.id]}"]`)).toBeVisible()
     const grid = page.locator('.victim-dot-grid')
     const beforeHover = await grid.boundingBox()
     await page.locator(dots).first().hover()
@@ -168,6 +170,7 @@ test('late single-case responses cannot replace a newer selected city', async ({
     await new Promise(resolve => setTimeout(resolve, 600))
     await route.continue().catch(() => {})
   })
+  await revealCityCounty(page, single)
   await page.getByLabel('Choose a city').selectOption(single.id)
   await page.getByRole('button', { name: 'Close city cases' }).click()
   await choose(page, small)

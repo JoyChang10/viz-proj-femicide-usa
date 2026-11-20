@@ -10,6 +10,6 @@ export function CityCaseHeader({ city, onClose }: { city: City; onClose: () => v
       <h2 id="city-title" ref={heading} tabIndex={-1}>{city.label}</h2>
       <button className="icon-button" aria-label="Close city cases" onClick={onClose}>×</button>
     </div>
-    <p className="city-case-count">{number(city.caseCount)} documented {city.caseCount === 1 ? 'case' : 'cases'}</p>
+    <p className="city-case-count">Women Count USA · {number(city.caseCount)} documented {city.caseCount === 1 ? 'case' : 'cases'}</p>
   </>
 }

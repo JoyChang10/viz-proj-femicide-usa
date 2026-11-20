@@ -1,0 +1,76 @@
+city_id,city,geoname_id,candidate_fips,reason,profiles
+bca582b004825e98,"Upton, KY",4311913,21093,Representative point does not fall in its GeoNames county polygon,1
+ee689bea110d3a67,"Rocky Mount, NC",4488762,37127,Representative point does not fall in its GeoNames county polygon,5
+ade05201c671d3a8,"Thurmond, NC",4495078,37171,Representative point does not fall in its GeoNames county polygon,1
+3d5431d0aab1d57b,"Whitakers, NC",4498571,37127,Representative point does not fall in its GeoNames county polygon,1
+77580a6e1f181ea7,"Hydro, OK",4539217,40011,Representative point does not fall in its GeoNames county polygon,1
+04fb4c122154a906,"Katy, TX",4702732,48201,Representative point does not fall in its GeoNames county polygon,10
+7419e970fe21e154,"Cromwell, CT",4832121,09130,GeoNames county code absent from chosen Census geography,1
+e723cabb71a7bbda,"Danbury, CT",4832353,09190,GeoNames county code absent from chosen Census geography,2
+a2bc2683aa1c4869,"East Granby, CT",4833343,09110,GeoNames county code absent from chosen Census geography,1
+109ddc5cee0df416,"East Hartford, CT",4833403,09110,GeoNames county code absent from chosen Census geography,3
+b4eb93ba3aa593aa,"East Haven, CT",4833425,09170,GeoNames county code absent from chosen Census geography,2
+2dce86d3c8aaefe8,"Essex, CT",4834089,09130,GeoNames county code absent from chosen Census geography,1
+10e215761a19aab6,"Fairfield, CT",4834157,09120,GeoNames county code absent from chosen Census geography,1
+900c9989f194c19c,"Flanders, CT",4834558,09180,GeoNames county code absent from chosen Census geography,1
+b6abf8e1b390b85b,"Gaylordsville, CT",4834913,09190,GeoNames county code absent from chosen Census geography,1
+d546508fceab5891,"Greenwich, CT",4835395,09190,GeoNames county code absent from chosen Census geography,3
+8e28e8986c44fa4c,"Groton, CT",4835461,09180,GeoNames county code absent from chosen Census geography,2
+942905df6a8206cb,"Hamden, CT",4835654,09170,GeoNames county code absent from chosen Census geography,1
+c1e6bd83b92f92cb,"Hartford, CT",4835797,09110,GeoNames county code absent from chosen Census geography,15
+30c5e5f7d0e4a9ad,"Hebron, CT",4835969,09110,GeoNames county code absent from chosen Census geography,2
+59e1afc0b535cb8e,"Ledyard, CT",4837648,09180,GeoNames county code absent from chosen Census geography,1
+51a6f5f497c22d3f,"Manchester, CT",4838174,09110,GeoNames county code absent from chosen Census geography,1
+7b976529d436f3fc,"Meriden, CT",4838524,09170,GeoNames county code absent from chosen Census geography,2
+1ed5a637be20a10a,"Middletown, CT",4838633,09130,GeoNames county code absent from chosen Census geography,3
+204e920781f5d825,"Milford, CT",4838652,09170,GeoNames county code absent from chosen Census geography,2
+73a6d86e114a6350,"Montville Center, CT",4838887,09180,GeoNames county code absent from chosen Census geography,1
+10f0644e765b8fe9,"Naugatuck, CT",4839222,09140,GeoNames county code absent from chosen Census geography,1
+0506d51ee599f958,"New Britain, CT",4839292,09110,GeoNames county code absent from chosen Census geography,11
+4ccaa5f3fbac7006,"New Canaan, CT",4839319,09190,GeoNames county code absent from chosen Census geography,2
+0468c97f865c72f1,"New Fairfield, CT",4839345,09190,GeoNames county code absent from chosen Census geography,1
+c8eba70ca5e46727,"New Hartford, CT",4839357,09160,GeoNames county code absent from chosen Census geography,1
+3aee70c508d60f45,"New Haven, CT",4839366,09170,GeoNames county code absent from chosen Census geography,11
+bc888c128749584d,"New London, CT",4839416,09180,GeoNames county code absent from chosen Census geography,2
+39a27ff6d2880c71,"Newington, CT",4839497,09110,GeoNames county code absent from chosen Census geography,1
+c940e718e21a31d2,"Niantic, CT",4839521,09180,GeoNames county code absent from chosen Census geography,1
+da5477302784ee12,"Norwalk, CT",4839822,09190,GeoNames county code absent from chosen Census geography,3
+670cc082e9259a8f,"Norwich, CT",4839843,09180,GeoNames county code absent from chosen Census geography,3
+5cbde1c21530c832,"Plainfield, CT",4840755,09150,GeoNames county code absent from chosen Census geography,1
+83c2cb0967c124ad,"Plainville, CT",4840767,09110,GeoNames county code absent from chosen Census geography,4
+55413e28364f4984,"Prospect, CT",4841089,09140,GeoNames county code absent from chosen Census geography,6
+b34c61aa88f60cb2,"Rockville, CT",4841628,09110,GeoNames county code absent from chosen Census geography,1
+56c55544afdb9783,"Rocky Hill, CT",4841665,09110,GeoNames county code absent from chosen Census geography,1
+933af512ae2f550c,"South Windsor, CT",4843353,09110,GeoNames county code absent from chosen Census geography,1
+b0de290deaf83de6,"Southington, CT",4843378,09110,GeoNames county code absent from chosen Census geography,1
+1f4213e5228fe1f3,"Stamford, CT",4843564,09190,GeoNames county code absent from chosen Census geography,5
+ce6cadaa906ceacc,"Stratford, CT",4843811,09120,GeoNames county code absent from chosen Census geography,1
+df44ab5e5feae953,"Terryville, CT",4844084,09140,GeoNames county code absent from chosen Census geography,1
+cc70373e3ca05bfd,"Tolland, CT",4844273,09110,GeoNames county code absent from chosen Census geography,2
+cc9f9ec275ece912,"Vernon, CT",4844827,09110,GeoNames county code absent from chosen Census geography,2
+e86351fc07087e92,"Waterbury, CT",4845193,09140,GeoNames county code absent from chosen Census geography,6
+e5e4dbfb82782322,"Watertown, CT",4845245,09140,GeoNames county code absent from chosen Census geography,2
+f60471fbcdb08050,"West Hartford, CT",4845411,09110,GeoNames county code absent from chosen Census geography,1
+1c0899cef74ba5f6,"West Haven, CT",4845419,09170,GeoNames county code absent from chosen Census geography,1
+5459d04e4490b1ea,"Westbrook, CT",4845533,09130,GeoNames county code absent from chosen Census geography,1
+254f0bd44f1af5c1,"Wethersfield, CT",4845612,09110,GeoNames county code absent from chosen Census geography,1
+db22e4040756bd90,"Willimantic, CT",4845823,09180,GeoNames county code absent from chosen Census geography,1
+30408f6f0ef05412,"Wilton, CT",4845871,09190,GeoNames county code absent from chosen Census geography,1
+ab5d111f83fd6da0,"Windsor Locks, CT",4845926,09110,GeoNames county code absent from chosen Census geography,3
+f3dc2be405aa563d,"Woodbridge, CT",4846022,09170,GeoNames county code absent from chosen Census geography,1
+bd516442ad2e7410,"Holland, MI",4996248,26005,Representative point does not fall in its GeoNames county polygon,2
+62afabff931070e1,"New York City, NY",5128581,36,GeoNames county code absent from chosen Census geography,15
+7db45c717c4d3413,"Vermilion, OH",5175072,39093,Representative point does not fall in its GeoNames county polygon,1
+96c47ada9bb5d7de,"Telford, PA",5215317,42017,Representative point does not fall in its GeoNames county polygon,1
+d2cd27227fa124f7,"Ansonia, CT",5281551,09140,GeoNames county code absent from chosen Census geography,2
+f7ef1169c065a4f4,"Bridgeport, CT",5282804,09120,GeoNames county code absent from chosen Census geography,6
+a268b7e79d835dc1,"Brooklyn, CT",5282922,09150,GeoNames county code absent from chosen Census geography,1
+528c0bcbefcf6208,"Burlington, CT",5283112,09160,GeoNames county code absent from chosen Census geography,1
+fde732c2310a4504,"Cheshire, CT",5283837,09140,GeoNames county code absent from chosen Census geography,4
+1f667885327c346f,"Aurora, CO",5412347,08001,Representative point does not fall in its GeoNames county polygon,23
+7c26fd84ccf7be86,"Erie, CO",5576859,08013,Representative point does not fall in its GeoNames county polygon,2
+45a1ea29b54792b9,"Glennallen, AK",5862936,02066,GeoNames county code absent from chosen Census geography,1
+c4aa71fede3d5654,"Hooper Bay, AK",5864197,02158,GeoNames county code absent from chosen Census geography,2
+9dcd18cd038baf86,"Kotlik, AK",5866719,02158,GeoNames county code absent from chosen Census geography,1
+245a03fd739cd61e,"Lakewood Ranch, FL",7255365,12081,Representative point does not fall in its GeoNames county polygon,1
+349cfb225bd3ab3c,"Waterford, CT",8480031,09180,GeoNames county code absent from chosen Census geography,1

@@ -1,3 +1,4 @@
+import { chooseCity } from './helpers'
 import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { createCityDiameterScale, MIN_CITY_DIAMETER, MAX_CITY_DIAMETER } from '../src/lib/cityMarkerScale'
@@ -45,7 +46,7 @@ test('real city circles stay scaled through hover, selection, profile opening, a
   await page.goto('/')
   const largest = data.cities.find(city => city.caseCount === counts.at(-1))!
   const smallest = data.cities.find(city => city.caseCount === counts[0])!
-  await page.getByLabel('Choose a city').selectOption(largest.id)
+  await chooseCity(page, largest)
   await expect(page.locator('.victim-dot')).toHaveCount(largest.caseCount)
   const marker = page.locator(`.single-city-marker:has([data-city-id="${largest.id}"])`)
   const circle = marker.locator('.marker-count')
@@ -60,7 +61,7 @@ test('real city circles stay scaled through hover, selection, profile opening, a
   await page.getByRole('button', { name: 'Close city cases' }).click()
   await expect(marker).not.toHaveClass(/is-selected/)
   await expect(circle).toHaveCSS('width', `${MAX_CITY_DIAMETER}px`)
-  await page.getByLabel('Choose a city').selectOption(smallest.id)
+  await chooseCity(page, smallest)
   await expect(page.getByTestId('victim-profile')).toBeVisible()
   const smallMarker = page.locator(`.single-city-marker:has([data-city-id="${smallest.id}"])`)
   await smallMarker.hover()
@@ -71,7 +72,7 @@ test('real city circles stay scaled through hover, selection, profile opening, a
 test('visible city sizes use the global scale even when the viewport shows only one region', async ({ page }) => {
   await page.goto('/')
   const target = data.cities.find(city => city.label === 'Houston, TX')!
-  await page.getByLabel('Choose a city').selectOption(target.id)
+  await chooseCity(page, target)
   await expect(page.locator('.victim-dot')).toHaveCount(target.caseCount)
   const circles = await page.locator('.single-city-marker .marker-count').evaluateAll(nodes => nodes.map(node => ({
     count: Number((node as HTMLElement).dataset.caseCount), size: node.getBoundingClientRect().width,

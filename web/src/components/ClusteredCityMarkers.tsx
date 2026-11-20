@@ -14,6 +14,7 @@ interface Props {
   cities: City[]
   onSelect: (city: City) => void
   selectedId?: string
+  scaleCities?: City[]
 }
 
 function featureKey(feature: MapFeature) {
@@ -66,7 +67,7 @@ function zoomToCluster(map: L.Map, index: CityClusterIndex, feature: CaseCluster
   }
 }
 
-export function ClusteredCityMarkers({ index, cities, onSelect, selectedId }: Props) {
+export function ClusteredCityMarkers({ index, cities, onSelect, selectedId, scaleCities = cities }: Props) {
   const map = useMap()
   const markers = useRef(new Map<string, L.Marker>())
   const onSelectRef = useRef(onSelect)
@@ -78,7 +79,7 @@ export function ClusteredCityMarkers({ index, cities, onSelect, selectedId }: Pr
     const layer = L.layerGroup().addTo(map)
     const current = markers.current
     const cityById = new Map(cities.map(city => [city.id, city]))
-    const cityDiameter = createCityDiameterScale(cities)
+    const cityDiameter = createCityDiameterScale(scaleCities)
     let frame: number | undefined
     const update = () => {
       const bounds = map.getBounds().pad(0.15)
@@ -143,7 +144,7 @@ export function ClusteredCityMarkers({ index, cities, onSelect, selectedId }: Pr
       current.clear()
       layer.remove()
     }
-  }, [map, index, cities])
+  }, [map, index, cities, scaleCities])
 
   useEffect(() => {
     markers.current.forEach((marker, key) => {

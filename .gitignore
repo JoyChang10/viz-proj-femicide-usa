@@ -1,6 +1,8 @@
 # Original exports remain local. Only the website's prepared public data is published.
 /airtable_export/
 /web/data/
+/.tools/
+/data/shr_geography/cache/
 
 # Local credentials, tools, build output, and test artifacts.
 .env

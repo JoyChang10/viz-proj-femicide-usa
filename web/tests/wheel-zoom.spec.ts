@@ -27,7 +27,7 @@ async function viewAt(page: Page, x: number, y: number) {
 
 test('small trackpad-style deltas change zoom gradually and keep the cursor location anchored', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.case-cluster-marker').first()).toBeVisible()
+  await expect(page.locator('path[data-level=state]').first()).toBeVisible()
   const box = (await page.locator('.city-map').boundingBox())!
   const x = box.x + box.width * 0.35
   const y = box.y + box.height * 0.42
@@ -53,7 +53,7 @@ test('small trackpad-style deltas change zoom gradually and keep the cursor loca
 
 test('coarse mouse-wheel pixel and line inputs remain usable; buttons and reset still work', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.case-cluster-marker').first()).toBeVisible()
+  await expect(page.locator('path[data-level=state]').first()).toBeVisible()
   const map = page.locator('.city-map')
   const box = (await map.boundingBox())!
   const x = box.x + box.width / 2
