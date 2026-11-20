@@ -116,8 +116,7 @@ test('Alaska, Hawaii, historical Connecticut and Guam geography remain reachable
 test('unassigned city profiles remain accessible without an asserted county', async ({ page }) => {
   const city=data.cities.find(c=>!geo.cityCounty[c.id]&&c.caseCount>1)!
   await page.goto('/')
-  await page.getByText('Sources, geography, and limitations',{exact:true}).click()
-  await page.getByLabel('Cities without a county match').selectOption(city.id)
+  await page.getByLabel('City with individual profiles', { exact: true }).fill(city.label)
   await expect(page.locator('#city-title')).toHaveText(city.label)
   await expect(page.locator('.victim-dot')).toHaveCount(city.caseCount)
   await expect(page.locator('path[data-level=county]')).toHaveCount(0)

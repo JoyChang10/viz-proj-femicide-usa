@@ -88,7 +88,7 @@ name guessing, or reassignment when the checks disagree.
 
 3,408 cities pass; 75 cities (210 available profiles) remain unassigned and are
 not shown in the county exploration layer. They remain accessible through the
-existing city exploration flow under Sources, geography, and limitations,
+main City with individual profiles search above the map,
 without assigning them to a county. This includes places whose modern
 county-equivalent code does not match the historical layer and points near
 generalized boundaries. Detailed source JSON remains intact. Representative

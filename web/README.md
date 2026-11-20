@@ -58,8 +58,9 @@ boundaries. No historical counts are allocated to successor counties.
 Representative city associations require both a GeoNames administrative county
 code and containment in the corresponding Census polygon. A city location does
 not establish a victim's incident county; cities can span borders. The 75 cities
-without an accepted association remain accessible under Sources, geography, and
-limitations, without an asserted county.
+without an accepted association remain accessible in the main City with
+individual profiles search, without an asserted county. State and city controls
+sit above the map, side by side on desktop and stacked on smaller screens.
 
 ## SHR preparation
 

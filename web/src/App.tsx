@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CityMap } from './components/CityMap'
 import { VictimProfile } from './components/VictimProfile'
 import { VictimDotGrid } from './components/VictimDotGrid'
+import { CityProfileSearch } from './components/CityProfileSearch'
 import { loadCases, loadIndex, number } from './lib/data'
 import { loadGeography, loadCounties, type GeographyData, type AreaFeature, type Areas } from './lib/geography'
 import type { City, DataIndex, VictimCase } from './types'
@@ -109,11 +110,26 @@ export default function App() {
   const years = geo ? `${geo.metadata.yearMin}–${geo.metadata.yearMax}` : ''
   const areas = state ? counties ?? EMPTY_AREAS : geo?.states ?? EMPTY_AREAS
   return <div className="app">
-    <header className="site-header"><h1>Women Count</h1><button className="reset-button" onClick={reset} disabled={!geo}>Reset Map</button></header>
+    <header className="site-header"><h1>Female Homicide in the U.S.</h1><button className="reset-button" onClick={reset} disabled={!geo}>Reset Map</button></header>
     <main>{!data || !geo ? <div className="loading-state" role={error ? 'alert' : 'status'}>
       {error ? <><h2>Data could not be loaded</h2><p>{error}</p><button onClick={() => setIndexAttempt(v => v + 1)}>Retry loading</button></> : 'Loading geographic data…'}
     </div> : <>
       <div className="coverage-bar"><p><strong>{number(geo.metadata.count)}</strong> reported female homicide victims with a recorded male offender · SHR, {years}</p></div>
+      <div className="map-controls" aria-label="Map exploration controls">
+        <div className="map-control">
+          <label htmlFor="state-select">Choose a state or territory</label>
+          <select id="state-select" value={state?.properties.fips ?? ''} onChange={event => {
+            const next = geo.states.features.find(f => f.properties.fips === event.target.value)
+            if (next) selectState(next)
+          }}>
+            <option value="" disabled>Choose a state…</option>
+            {[...geo.states.features].sort((a, b) => a.properties.name.localeCompare(b.properties.name)).map(f => <option key={f.properties.fips} value={f.properties.fips}>{f.properties.name}</option>)}
+          </select>
+        </div>
+        <CityProfileSearch cities={data.cities} selectedCity={city} onSelect={next => {
+          setState(undefined); setCounty(undefined); selectCity(next)
+        }} />
+      </div>
       <div className="explorer">
         <CityMap cities={data.cities} visibleCities={visibleCities} selectedCity={city} onSelect={selectCity} resetVersion={resetVersion}
           areas={areas} state={state} county={county} onSelectArea={onSelectArea} years={years} />
@@ -131,11 +147,7 @@ export default function App() {
               <p className="area-count" data-testid="shr-count">{countText(county ? county.properties.count : state ? state.properties.count : geo.metadata.count)}</p>
               <p className="muted">Reported female homicide victims with a recorded male offender. This measure does not establish gender motivation.</p>
               {!state ? <>
-                <label className="city-label" htmlFor="state-select">Choose a state or territory</label>
-                <select id="state-select" value="" onChange={e => { const next = geo.states.features.find(f => f.properties.fips === e.target.value); if (next) selectState(next) }}>
-                  <option value="" disabled>Choose a state…</option>
-                  {[...geo.states.features].sort((a, b) => a.properties.name.localeCompare(b.properties.name)).map(f => <option key={f.properties.fips} value={f.properties.fips}>{f.properties.name}</option>)}
-                </select><p className="muted exploration-note">Select a state to explore its counties.</p>
+                <p className="muted exploration-note">Select a state to explore its counties.</p>
               </> : !county ? <>
                 {countyError ? <div role="alert"><p>{countyError}</p><button onClick={() => setCountyAttempt(v => v + 1)}>Retry counties</button></div> : !counties ? <p role="status">Loading counties…</p> : <>
                   <label className="city-label" htmlFor="county-select">Choose a county</label>
@@ -168,14 +180,6 @@ export default function App() {
           <p>County boundaries: 2010 Census geography, with a 2024 Guam supplement. Historical FIPS codes are retained; these are not year-specific boundaries. No historical counts were reassigned to current counties.</p>
           <p>Women Count USA profiles have different definitions and time coverage. City locations are representative points, not exact incidents. {number(data.metadata.unmappedCases)} original records have no resolved city location; another {number(geo.metadata.unassignedCities)} mapped cities could not be reliably associated with this county geography.</p>
           <p>Some nearby city markers form clusters. Select a cluster to zoom, or use the county’s city list.</p>
-          <label className="city-label" htmlFor="unassigned-city">Cities without a county match</label>
-          <select id="unassigned-city" value="" onChange={event => {
-            const next = data.cities.find(c => c.id === event.target.value)
-            if (next) { setState(undefined); setCounty(undefined); selectCity(next) }
-          }}>
-            <option value="" disabled>Explore an unassigned city…</option>
-            {data.cities.filter(c => !geo.cityCounty[c.id]).map(c => <option key={c.id} value={c.id}>{c.label} ({number(c.caseCount)} profiles)</option>)}
-          </select>
           <p>These profiles remain accessible by city without implying an incident county.</p>
         </details>
       </div>

@@ -7,7 +7,7 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
-button, select { font: inherit; }
+button, select, input { font: inherit; }
 button { cursor: pointer; color: inherit; background: transparent; border: 1px solid #cbc6cd; border-radius: 3px; padding: 8px 14px; }
 button:hover { background: #f4f0f3; }
 button:disabled { opacity: .5; cursor: default; }
@@ -46,6 +46,11 @@ main { padding: 0; }
 .muted { font-size: 13px; color: #69626d; line-height: 1.6; }
 .city-label { display: block; margin: 28px 0 8px; font-size: 13px; font-weight: 550; }
 select { width: 100%; min-width: 0; border: 1px solid #cbc6cd; border-radius: 3px; background: #fff; padding: 10px 8px; font-size: 14px; color: inherit; }
+.map-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 20px; }
+.map-control { min-width: 0; }
+.map-control label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 550; }
+.map-control input { width: 100%; min-width: 0; border: 1px solid #cbc6cd; border-radius: 3px; background: #fff; padding: 10px 8px; font-size: 14px; color: inherit; }
+.map-control p { margin-top: 6px; font-size: 12px; color: #69626d; }
 .panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .panel-heading h2 { flex: 1; min-width: 0; }
 .panel-heading h2:focus { outline: none; }
@@ -106,6 +111,7 @@ footer { padding: 14px 0 24px; color: #69626d; font-size: 11px; }
   .sidebar-scroll { padding-left: 24px; }
 }
 @media (max-width: 800px) {
+  .map-controls { grid-template-columns: 1fr; gap: 14px; }
   .app { padding: 0 16px; }
   .site-header { padding: 22px 0 16px; gap: 12px; }
   h1 { font-size: 26px; }
@@ -143,6 +149,6 @@ footer { padding: 14px 0 24px; color: #69626d; font-size: 11px; }
 .single-city-marker .marker-count, .case-cluster-marker { background: #433148; }
 @media (max-width: 800px) {
   .geo-navigation { padding-left: 0; }
-  .explorer-sidebar:has(#state-select), .explorer-sidebar:has(#county-select), .explorer-sidebar:has(.county-profiles) { height: auto; max-height: 560px; min-height: 270px; }
+  .explorer-sidebar:has(#area-title), .explorer-sidebar:has(#county-select), .explorer-sidebar:has(.county-profiles) { height: auto; max-height: 560px; min-height: 270px; }
   .choropleth-legend { width: 235px; font-size: 10px; padding: 7px 9px; }
 }
