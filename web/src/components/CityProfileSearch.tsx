@@ -10,7 +10,7 @@ export function CityProfileSearch({ cities, selectedCity, onSelect }: {
   return <div className="map-control">
     <label htmlFor="profile-city-search">City with individual profiles</label>
     <input id="profile-city-search" type="search" list={listId} value={query}
-      placeholder="Search available cities..." autoComplete="off" aria-describedby="profile-city-caption"
+      placeholder="Search cities with profiles..." autoComplete="off" aria-describedby="profile-city-caption"
       onChange={event => {
         const value = event.target.value
         setQuery(value)
