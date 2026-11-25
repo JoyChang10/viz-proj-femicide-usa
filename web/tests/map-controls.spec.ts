@@ -4,13 +4,14 @@ import type { DataIndex } from '../src/types'
 
 const data = JSON.parse(readFileSync('public/data/index.json', 'utf8')) as DataIndex
 
-test('main controls search existing profile cities and navigate states without changing the headline', async ({ page }) => {
+test('main controls search existing profile cities and navigate states', async ({ page }) => {
   await page.goto('/')
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Female Homicide in the U.S.')
-  await expect(page.locator('.coverage-bar')).toHaveText('131,668 reported female homicide victims with a recorded male offender · SHR, 1976–2024')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Femicide in the U.S.')
+  await expect(page.locator('.site-intro')).toHaveText('Exploring femicide in the United States through national homicide records and individually documented cases spanning the 1950s to 2026.')
+  await expect(page.getByTestId('shr-count')).toHaveText('131,668')
   const state = page.getByLabel('Choose a state or territory')
-  const city = page.getByLabel('City with individual profiles', { exact: true })
-  await expect(city).toHaveAttribute('placeholder', 'Search available cities...')
+  const city = page.getByLabel('Find individual profiles by city', { exact: true })
+  await expect(city).toHaveAttribute('placeholder', 'Search cities with profiles...')
   await expect(page.locator('#profile-city-caption')).toHaveText('Women Count USA · Selected documented cases only')
   expect(await page.locator('datalist option').evaluateAll(options => options.map(o => (o as HTMLOptionElement).value))).toEqual(data.cities.map(c => c.label))
   const a = (await state.boundingBox())!, b = (await city.boundingBox())!, map = (await page.locator('.city-map').boundingBox())!
@@ -30,14 +31,14 @@ test('main controls search existing profile cities and navigate states without c
   await expect(page.locator('#area-title')).toHaveText('Washington')
   await expect(city).toHaveValue('')
   await expect(page.locator('.method-note input,.method-note select')).toHaveCount(0)
-  await expect(page.locator('.coverage-bar')).toContainText('131,668')
+  await expect(page.locator('.site-header')).not.toContainText('131,668')
 })
 
 test('controls stack on mobile and the search keeps the existing single-profile behavior', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   const state = page.getByLabel('Choose a state or territory')
-  const city = page.getByLabel('City with individual profiles', { exact: true })
+  const city = page.getByLabel('Find individual profiles by city', { exact: true })
   await expect(city).toBeVisible()
   const a = (await state.boundingBox())!, b = (await city.boundingBox())!
   expect(a.x).toBe(b.x)

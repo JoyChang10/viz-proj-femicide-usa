@@ -1,5 +1,7 @@
 import type { Feature, FeatureCollection, MultiPolygon, Polygon } from 'geojson'
 
+export const FBI_COUNT_SOURCE = 'FBI Supplementary Homicide Reports'
+
 export interface AreaProperties {
   fips: string; name: string; state_fips: string; state_abb: string
   count: number | null; observed_years: number; boundary_vintage?: number
@@ -31,7 +33,7 @@ export function createCountScale(features: AreaFeature[]) {
 }
 export async function loadGeography(signal?: AbortSignal): Promise<GeographyData> {
   const response = await fetch(`${import.meta.env.BASE_URL}data/shr/index.json`, { signal })
-  if (!response.ok) throw new Error(`Could not load SHR geography (${response.status}).`)
+  if (!response.ok) throw new Error(`Could not load geographic counts (${response.status}).`)
   return response.json()
 }
 const cache = new Map<string, Areas>()

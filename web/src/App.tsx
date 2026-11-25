@@ -6,12 +6,12 @@ import { CityProfileSearch } from './components/CityProfileSearch'
 import { AnalysisPlaceholder, StateAnalysisLinks, analysisTitle } from './components/StateAnalysis'
 import { Tooltip } from './components/Tooltip'
 import { loadCases, loadIndex, number } from './lib/data'
-import { loadGeography, loadCounties, type GeographyData, type AreaFeature, type Areas } from './lib/geography'
+import { FBI_COUNT_SOURCE, loadGeography, loadCounties, type GeographyData, type AreaFeature, type Areas } from './lib/geography'
 import type { City, DataIndex, VictimCase } from './types'
 
 const EMPTY_AREAS: Areas = { type: 'FeatureCollection', features: [] }
 const countText = (count: number | null) => count === null ? 'No reported data' : number(count)
-const countDefinition = 'Reported female homicide victims with a recorded male offender (SHR). This measure does not establish gender motivation. Counts do not account for population size.'
+const countDefinition = `${FBI_COUNT_SOURCE}: reported female homicide victims with a recorded male offender. This measure does not establish gender motivation. Counts do not account for population size.`
 
 function setMapState(fips?: string) {
   const url = new URL(window.location.href)
@@ -133,11 +133,16 @@ function MapExplorer({ initialState }: { initialState: string | null }) {
   const years = geo ? `${geo.metadata.yearMin}–${geo.metadata.yearMax}` : ''
   const areas = state ? counties ?? EMPTY_AREAS : geo?.states ?? EMPTY_AREAS
   return <div className="app">
-    <header className="site-header"><h1>Female Homicide in the U.S.</h1><button className="reset-button" onClick={reset} disabled={!geo}>Reset Map</button></header>
+    <header className="site-header">
+      <div>
+        <h1>Femicide in the U.S.</h1>
+        <p className="site-intro">Exploring femicide in the United States through national homicide records and individually documented cases spanning the 1950s to 2026.</p>
+      </div>
+      <button className="reset-button" onClick={reset} disabled={!geo}>Reset Map</button>
+    </header>
     <main>{!data || !geo ? <div className="loading-state" role={error ? 'alert' : 'status'}>
       {error ? <><h2>Data could not be loaded</h2><p>{error}</p><button onClick={() => setIndexAttempt(v => v + 1)}>Retry loading</button></> : 'Loading geographic data…'}
     </div> : <>
-      <div className="coverage-bar"><p><strong>{number(geo.metadata.count)}</strong> reported female homicide victims with a recorded male offender · SHR, {years}</p></div>
       <div className="map-controls" aria-label="Map exploration controls">
         <div className="map-control">
           <label htmlFor="state-select">Choose a state or territory</label>
@@ -159,14 +164,14 @@ function MapExplorer({ initialState }: { initialState: string | null }) {
           areas={areas} nationalStates={geo.states} state={state} county={county} onSelectArea={onSelectArea} onNational={reset} years={years} />
         <aside className="explorer-sidebar" aria-label="Geographic statistics and individual profiles">
           {state && <nav className="geo-navigation" aria-label="Map navigation">
-            <button onClick={reset}>All states</button>
-            {county && <button onClick={backToState}>{state.properties.name} counties</button>}
-            {city && <button onClick={closeCity}>{county?.properties.name}</button>}
+            <button type="button" onClick={reset}><span aria-hidden="true">←</span> All States</button>
+            {county && <button type="button" onClick={backToState}><span aria-hidden="true">←</span> {state.properties.name} Counties</button>}
+            {city && <button type="button" onClick={closeCity}><span aria-hidden="true">←</span> {county?.properties.name}</button>}
           </nav>}
           <div className="sidebar-scroll" ref={cityScroll} hidden={!!record}>
             {city ? <VictimDotGrid key={city.id} city={city} cases={cases} loading={loadingCases} error={caseError}
               selectedId={selectedCaseId} onClose={closeCity} onRetry={() => setCaseAttempt(v => v + 1)} onSelect={selectRecord} /> : <>
-              <h2 id="area-title">{county?.properties.name ?? state?.properties.name ?? 'Reported homicide counts'}</h2>
+              <h2 id="area-title">{county?.properties.name ?? state?.properties.name ?? 'Reported femicide counts'}</h2>
               <div className="count-line">
                 <span className="area-count" data-testid="shr-count">{countText(county ? county.properties.count : state ? state.properties.count : geo.metadata.count)}</span>
                 <span className="count-label">Reported victims</span>
@@ -176,12 +181,14 @@ function MapExplorer({ initialState }: { initialState: string | null }) {
                 </Tooltip>
               </div>
               <p className="count-years">{years}</p>
+              <p className="count-source">{FBI_COUNT_SOURCE}</p>
+              <p className="count-context">Female homicide victims with a recorded male offender. These records do not establish gender motivation.</p>
               {!state ? <>
                 <p className="muted exploration-note">Select a state to explore its counties.</p>
               </> : !county ? <>
                 <div className="state-profile-guide">
                   <p><strong>Behind every number is a person.</strong></p>
-                  <p>Explore counties and cities to discover the individual stories of victims.</p>
+                  <p>Select a county and click the dots on the map to explore individual victims' stories.</p>
                 </div>
                 {countyError ? <div role="alert"><p>{countyError}</p><button onClick={() => setCountyAttempt(v => v + 1)}>Retry counties</button></div> : !counties ? <p role="status">Loading counties…</p> : <>
                   <label className="city-label" htmlFor="county-select">Choose a county</label>
@@ -193,10 +200,9 @@ function MapExplorer({ initialState }: { initialState: string | null }) {
                 </>}
                 <StateAnalysisLinks state={state.properties.fips} />
               </> : <div className="county-profiles">
-                <h3>Women Count USA profiles</h3>
-                <p className="profile-availability" data-testid="profile-count">{number(profileCount)} available profiles · {number(visibleCities.length)} cities</p>
-                <p className="muted">A separate collection of documented cases, not matched to SHR records. These totals are not expected to agree.</p>
-                <p className="muted exploration-note">Cities are associated by their representative location, not verified incident counties. Cities can span county borders.</p>
+                <h3>Individual Victim Profiles</h3>
+                <p className="profile-availability" data-testid="profile-count"><strong>{number(profileCount)}</strong> documented {profileCount === 1 ? 'case' : 'cases'} · <strong>{number(visibleCities.length)}</strong> {visibleCities.length === 1 ? 'city' : 'cities'}</p>
+                <p className="muted">These documented cases come from a separate collection.</p>
                 {visibleCities.length > 0 ? <><label className="city-label" htmlFor="city-select">Choose a city</label>
                   <select id="city-select" value="" onChange={e => { const next = visibleCities.find(c => c.id === e.target.value); if (next) selectCity(next) }}>
                     <option value="" disabled>Choose a city…</option>
@@ -211,14 +217,15 @@ function MapExplorer({ initialState }: { initialState: string | null }) {
       <div className="method-note">
         <p>Shading shows reported counts, not population-adjusted risk. Missing data is not zero.</p>
         <details><summary>Sources, geography, and limitations</summary>
-          <p>SHR counts use the supplied cleaned county-year table, summed once across {years}. Missing county-years are not imputed. Geographic reporting coverage varies.</p>
+          <p><strong>{FBI_COUNT_SOURCE} ({years})</strong> provide aggregate counts of reported female homicide victims with a recorded male offender. The counts use a cleaned county-year table. Geographic reporting coverage varies, and missing county-years remain unfilled.</p>
+          <p><strong>Women Count USA (1950s–2026)</strong> provides individually documented cases. The datasets have not been matched or deduplicated across sources, and some cases may appear in both. Each dataset has its own coverage and definitions.</p>
           <p>County boundaries: 2010 Census geography, with a 2024 Guam supplement. Historical FIPS codes are retained; these are not year-specific boundaries. No historical counts were reassigned to current counties.</p>
-          <p>Women Count USA profiles have different definitions and time coverage. City locations are representative points, not exact incidents. {number(data.metadata.unmappedCases)} original records have no resolved city location; another {number(geo.metadata.unassignedCities)} mapped cities could not be reliably associated with this county geography.</p>
+          <p>Individual profiles are assigned to counties using representative city locations. Cities can span county borders, and these assignments do not verify the county of an incident. {number(data.metadata.unmappedCases)} original records have no resolved city location, and {number(geo.metadata.unassignedCities)} mapped cities could not be reliably associated with this county geography.</p>
           <p>Some nearby city markers form clusters. Select a cluster to zoom, or use the county’s city list.</p>
           <p>These profiles remain accessible by city without implying an incident county.</p>
         </details>
       </div>
     </>}</main>
-    <footer>Counts: cleaned SHR dataset · Profiles: Women Count USA · Boundaries: <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html" target="_blank" rel="noreferrer">U.S. Census Bureau</a> · City locations: <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>)</footer>
+    <footer>Counts: {FBI_COUNT_SOURCE} · Individual cases: <a href="https://womencountusa.org/" target="_blank" rel="noreferrer">Women Count USA</a> · Boundaries: <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html" target="_blank" rel="noreferrer">U.S. Census Bureau</a> · City locations: <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>)</footer>
   </div>
 }

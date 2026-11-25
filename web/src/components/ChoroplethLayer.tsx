@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import L from 'leaflet'
 import { useMap } from 'react-leaflet'
-import { createCountScale, type AreaFeature, type Areas } from '../lib/geography'
+import { FBI_COUNT_SOURCE, createCountScale, type AreaFeature, type Areas } from '../lib/geography'
 import { number } from '../lib/data'
 
 export function ChoroplethLayer({ areas, level, selectedCounty, onSelect }: {
@@ -48,11 +48,12 @@ export function ChoroplethLegend({ areas, level, years, profiles }: { areas: Are
   const stops = Array.from({ length: 9 }, (_, i) => scale.color((Math.sqrt(scale.min) + i / 8 * (Math.sqrt(scale.max) - Math.sqrt(scale.min))) ** 2))
   return <div className="choropleth-legend" aria-label={`${level} count legend`}>
     <strong>{level === 'state' ? 'State' : 'County'} counts · {years}</strong>
-    <span>Female homicide victims, recorded male offender (SHR)</span>
+    <span>{FBI_COUNT_SOURCE}</span>
+    <span>Female homicide victims with a recorded male offender</span>
     {scale.max > 0 && <><div className="color-ramp" style={{ background: `linear-gradient(to right, ${stops.join(', ')})` }} />
       <div className="legend-values"><span>{number(scale.min)}</span><span>{number(scale.max)}</span></div></>}
     <div className="legend-keys"><span><i className="zero-key" />0 reported</span><span><i className="missing-key" />No data</span></div>
     <span>Counts, not population-adjusted rates.</span>
-    {profiles && <span className="profile-marker-key"><i /> City markers: Women Count USA profiles</span>}
+    {profiles && <span className="profile-marker-key"><i /> City markers: Individual Victim Profiles</span>}
   </div>
 }
