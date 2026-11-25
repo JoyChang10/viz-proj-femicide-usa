@@ -27,7 +27,8 @@ h3 { font-size: 15px; font-weight: 650; margin: 28px 0 10px; }
 main { padding: 0; }
 .coverage-bar { display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px; color: #5e6563; font-size: 13px; }
 .coverage-bar strong { font-weight: 550; color: #303735; font-variant-numeric: tabular-nums; }
-.explorer { display: grid; grid-template-columns: minmax(0, 1fr) 400px; grid-template-rows: minmax(0, 1fr); height: min(760px, calc(100dvh - 215px)); min-height: 490px; }
+.explorer { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); grid-template-rows: minmax(0, 1fr); height: min(760px, calc(100dvh - 215px)); min-height: 490px; }
+.explorer-state { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .map-frame { position: relative; min-width: 0; min-height: 0; height: 100%; }
 .city-map { width: 100%; height: 100%; background: #f7f7f3; z-index: 0; }
 .map-legend { position: absolute; left: 12px; bottom: 28px; z-index: 400; display: flex; align-items: center; gap: 6px; max-width: calc(100% - 24px); padding: 5px 8px; background: #fffffff2; font-size: 11px; pointer-events: none; }
@@ -47,6 +48,12 @@ main { padding: 0; }
 .sidebar-scroll:has(.city-dot-view) { overflow: hidden; scrollbar-gutter: auto; }
 .sidebar-scroll > .muted { margin-top: 14px; max-width: 30ch; font-size: 14px; line-height: 1.65; }
 .muted { font-size: 13px; color: #5e6563; line-height: 1.6; }
+.sidebar-scroll > .state-profile-guide { max-width: 54ch; font-size: 13px; }
+.state-topics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 12px; margin: 16px 0; }
+.state-topics button { display: grid; align-content: start; gap: 4px; padding: 12px 14px; text-align: left; opacity: 1; background: #fffefb; }
+.state-topics span { color: #006b78; font-size: 14px; font-weight: 650; }
+.state-topics small { color: #5e6563; font-size: 12px; }
+.state-topics + .city-label { margin-top: 0; }
 .city-label { display: block; margin: 28px 0 8px; font-size: 13px; font-weight: 550; }
 select { width: 100%; min-width: 0; border: 1px solid #c7cecc; border-radius: 3px; background: #fffefb; padding: 10px 8px; font-size: 14px; color: inherit; }
 .map-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 20px; }
@@ -105,12 +112,10 @@ summary { cursor: pointer; padding: 3px 0; }
 footer { padding: 14px 0 24px; color: #5e6563; font-size: 11px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (min-width: 1500px) {
-  .explorer { grid-template-columns: minmax(0, 1fr) 420px; }
   .sidebar-scroll { padding-left: 36px; }
 }
 @media (max-width: 1100px) and (min-width: 801px) {
   .app { padding: 0 24px; }
-  .explorer { grid-template-columns: minmax(0, 1fr) 340px; }
   .sidebar-scroll { padding-left: 24px; }
 }
 @media (max-width: 800px) {
@@ -164,6 +169,7 @@ footer { padding: 14px 0 24px; color: #5e6563; font-size: 11px; }
 .leaflet-interactive:focus-visible { outline-color: var(--gold); }
 @media (max-width: 800px) {
   .geo-navigation { padding-left: 0; }
-  .explorer-sidebar:has(#area-title), .explorer-sidebar:has(#county-select), .explorer-sidebar:has(.county-profiles) { height: auto; max-height: 560px; min-height: 270px; }
+  .explorer-sidebar:has(#area-title) { height: auto; min-height: 270px; }
+  .explorer-sidebar:has(#area-title):not(:has(.state-topics)) { max-height: 560px; }
   .choropleth-legend { width: 235px; font-size: 10px; padding: 7px 9px; }
 }

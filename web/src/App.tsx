@@ -130,7 +130,7 @@ export default function App() {
           setState(undefined); setCounty(undefined); selectCity(next)
         }} />
       </div>
-      <div className="explorer">
+      <div className={`explorer${state ? ' explorer-state' : ''}`}>
         <CityMap cities={data.cities} visibleCities={visibleCities} selectedCity={city} onSelect={selectCity} resetVersion={resetVersion}
           areas={areas} nationalStates={geo.states} state={state} county={county} onSelectArea={onSelectArea} onNational={reset} years={years} />
         <aside className="explorer-sidebar" aria-label="Geographic statistics and individual profiles">
@@ -149,6 +149,19 @@ export default function App() {
               {!state ? <>
                 <p className="muted exploration-note">Select a state to explore its counties.</p>
               </> : !county ? <>
+                <p className="muted state-profile-guide">
+                  Select a county, then a city with Women Count USA profiles. Choose a victim dot to open a profile. In cities with one case, the profile opens directly.
+                </p>
+                <div className="state-topics" role="group" aria-label="Planned state analyses">
+                  <button type="button" disabled aria-labelledby="trends-label" aria-describedby="trends-details">
+                    <span id="trends-label">Socioeconomic Trends</span>
+                    <small id="trends-details">Explore homicide rates alongside changes in socioeconomic conditions.</small>
+                  </button>
+                  <button type="button" disabled aria-labelledby="demographics-label" aria-describedby="demographics-details">
+                    <span id="demographics-label">Victim Demographics</span>
+                    <small id="demographics-details">Explore patterns in victims' age, race, and other demographic characteristics.</small>
+                  </button>
+                </div>
                 {countyError ? <div role="alert"><p>{countyError}</p><button onClick={() => setCountyAttempt(v => v + 1)}>Retry counties</button></div> : !counties ? <p role="status">Loading counties…</p> : <>
                   <label className="city-label" htmlFor="county-select">Choose a county</label>
                   <select id="county-select" value="" onChange={e => { const next = counties.features.find(f => f.properties.fips === e.target.value); if (next) selectCounty(next) }}>

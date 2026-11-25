@@ -45,6 +45,13 @@ test('controls stack on mobile and the search keeps the existing single-profile 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   await state.selectOption('16')
   await expect(page.locator('#area-title')).toHaveText('Idaho')
+  const map = (await page.locator('.map-frame').boundingBox())!
+  const sidebar = (await page.locator('.explorer-sidebar').boundingBox())!
+  expect(sidebar.y).toBeGreaterThanOrEqual(map.y + map.height)
+  expect(sidebar.width).toBeCloseTo(map.width)
+  await expect(page.getByRole('button', { name: 'Socioeconomic Trends' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Victim Demographics' })).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   await city.fill('Aberdeen, ID')
   await expect(page.getByTestId('victim-profile')).toBeVisible()
   await page.getByRole('button', { name: 'Close victim profile' }).click()
