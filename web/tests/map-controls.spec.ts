@@ -49,8 +49,8 @@ test('controls stack on mobile and the search keeps the existing single-profile 
   const sidebar = (await page.locator('.explorer-sidebar').boundingBox())!
   expect(sidebar.y).toBeGreaterThanOrEqual(map.y + map.height)
   expect(sidebar.width).toBeCloseTo(map.width)
-  await expect(page.getByRole('button', { name: 'Socioeconomic Trends' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Victim Demographics' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Socioeconomic Trends' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Victim Demographics' })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   await city.fill('Aberdeen, ID')
   await expect(page.getByTestId('victim-profile')).toBeVisible()

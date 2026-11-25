@@ -3,13 +3,31 @@ import { CityMap } from './components/CityMap'
 import { VictimProfile } from './components/VictimProfile'
 import { VictimDotGrid } from './components/VictimDotGrid'
 import { CityProfileSearch } from './components/CityProfileSearch'
+import { AnalysisPlaceholder, StateAnalysisLinks, analysisTitle } from './components/StateAnalysis'
+import { Tooltip } from './components/Tooltip'
 import { loadCases, loadIndex, number } from './lib/data'
 import { loadGeography, loadCounties, type GeographyData, type AreaFeature, type Areas } from './lib/geography'
 import type { City, DataIndex, VictimCase } from './types'
 
 const EMPTY_AREAS: Areas = { type: 'FeatureCollection', features: [] }
 const countText = (count: number | null) => count === null ? 'No reported data' : number(count)
+const countDefinition = 'Reported female homicide victims with a recorded male offender (SHR). This measure does not establish gender motivation. Counts do not account for population size.'
+
+function setMapState(fips?: string) {
+  const url = new URL(window.location.href)
+  if (fips) url.searchParams.set('state', fips)
+  else url.searchParams.delete('state')
+  window.history.replaceState(window.history.state, '', url)
+}
+
 export default function App() {
+  const params = new URLSearchParams(window.location.search)
+  const title = analysisTitle(params.get('analysis'))
+  const state = params.get('state')
+  return title ? <AnalysisPlaceholder title={title} state={state} /> : <MapExplorer initialState={state} />
+}
+
+function MapExplorer({ initialState }: { initialState: string | null }) {
   const [data, setData] = useState<DataIndex>()
   const [geo, setGeo] = useState<GeographyData>()
   const [state, setState] = useState<AreaFeature>()
@@ -35,10 +53,13 @@ export default function App() {
     const controller = new AbortController()
     setError(null)
     Promise.all([loadIndex(controller.signal), loadGeography(controller.signal)]).then(([next, geography]) => {
-      setData(next); setGeo(geography)
+      if (controller.signal.aborted) return
+      setData(next)
+      setGeo(geography)
+      setState(geography.states.features.find(area => area.properties.fips === initialState))
     }).catch((err: Error) => { if (err.name !== 'AbortError') setError(err.message) })
     return () => controller.abort()
-  }, [indexAttempt])
+  }, [indexAttempt, initialState])
   useEffect(() => {
     setCounties(undefined); setCountyError(null)
     if (!state) return
@@ -93,6 +114,7 @@ export default function App() {
   }, [record, getCityScroll])
   const selectState = useCallback((next: AreaFeature) => {
     closeCity(); setCounty(undefined); setCounties(undefined); setState(next)
+    setMapState(next.properties.fips)
   }, [closeCity])
   const selectCounty = useCallback((next: AreaFeature) => { closeCity(); setCounty(next) }, [closeCity])
   const onSelectArea = useCallback((next: AreaFeature) => {
@@ -101,6 +123,7 @@ export default function App() {
   }, [state, selectCounty, selectState])
   const reset = () => {
     closeCity(); setCounty(undefined); setState(undefined); setCounties(undefined); setResetVersion(v => v + 1)
+    setMapState()
   }
   const backToState = () => {
     closeCity(); setCounty(undefined); setState(previous => previous ? { ...previous } : undefined)
@@ -128,6 +151,7 @@ export default function App() {
         </div>
         <CityProfileSearch cities={data.cities} selectedCity={city} onSelect={next => {
           setState(undefined); setCounty(undefined); selectCity(next)
+          setMapState()
         }} />
       </div>
       <div className={`explorer${state ? ' explorer-state' : ''}`}>
@@ -143,24 +167,21 @@ export default function App() {
             {city ? <VictimDotGrid key={city.id} city={city} cases={cases} loading={loadingCases} error={caseError}
               selectedId={selectedCaseId} onClose={closeCity} onRetry={() => setCaseAttempt(v => v + 1)} onSelect={selectRecord} /> : <>
               <h2 id="area-title">{county?.properties.name ?? state?.properties.name ?? 'Reported homicide counts'}</h2>
-              <p className="area-source">SHR · {years}</p>
-              <p className="area-count" data-testid="shr-count">{countText(county ? county.properties.count : state ? state.properties.count : geo.metadata.count)}</p>
-              <p className="muted">Reported female homicide victims with a recorded male offender. This measure does not establish gender motivation.</p>
+              <div className="count-line">
+                <span className="area-count" data-testid="shr-count">{countText(county ? county.properties.count : state ? state.properties.count : geo.metadata.count)}</span>
+                <span className="count-label">Reported victims</span>
+                <Tooltip text={countDefinition} className="count-tooltip">
+                  {descriptionId => <button className="count-info" type="button" aria-label="About reported victims"
+                    aria-describedby={descriptionId} onClick={event => event.currentTarget.focus()}>i</button>}
+                </Tooltip>
+              </div>
+              <p className="count-years">{years}</p>
               {!state ? <>
                 <p className="muted exploration-note">Select a state to explore its counties.</p>
               </> : !county ? <>
-                <p className="muted state-profile-guide">
-                  Select a county, then a city with Women Count USA profiles. Choose a victim dot to open a profile. In cities with one case, the profile opens directly.
-                </p>
-                <div className="state-topics" role="group" aria-label="Planned state analyses">
-                  <button type="button" disabled aria-labelledby="trends-label" aria-describedby="trends-details">
-                    <span id="trends-label">Socioeconomic Trends</span>
-                    <small id="trends-details">Explore homicide rates alongside changes in socioeconomic conditions.</small>
-                  </button>
-                  <button type="button" disabled aria-labelledby="demographics-label" aria-describedby="demographics-details">
-                    <span id="demographics-label">Victim Demographics</span>
-                    <small id="demographics-details">Explore patterns in victims' age, race, and other demographic characteristics.</small>
-                  </button>
+                <div className="state-profile-guide">
+                  <p><strong>Behind every number is a person.</strong></p>
+                  <p>Explore counties and cities to discover the individual stories of victims.</p>
                 </div>
                 {countyError ? <div role="alert"><p>{countyError}</p><button onClick={() => setCountyAttempt(v => v + 1)}>Retry counties</button></div> : !counties ? <p role="status">Loading counties…</p> : <>
                   <label className="city-label" htmlFor="county-select">Choose a county</label>
@@ -170,6 +191,7 @@ export default function App() {
                   </select>
                   {!counties.features.length && <p className="muted">County boundaries are unavailable for this territory.</p>}
                 </>}
+                <StateAnalysisLinks state={state.properties.fips} />
               </> : <div className="county-profiles">
                 <h3>Women Count USA profiles</h3>
                 <p className="profile-availability" data-testid="profile-count">{number(profileCount)} available profiles · {number(visibleCities.length)} cities</p>
