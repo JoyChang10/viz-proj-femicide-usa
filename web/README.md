@@ -31,6 +31,14 @@ for the existing GitHub/Cloudflare Workers deployment. No credentials belong in
 the frontend. Background OpenStreetMap tiles require internet access; a tile
 failure leaves the prepared geographic and profile data available.
 
+## Brand palette
+
+Edit `BRAND_COLORS` in [theme.py](../theme.py), then run `python theme.py`
+from the repository root. Commit both the Python file and the generated
+`web/src/palette.css`. The website imports the generated CSS, so its build
+still only needs Node.js. Map count colors are defined separately so brand
+changes do not change how the map encodes counts.
+
 ## Map and case navigation
 
 1. The fixed national view uses an Albers U.S. display projection with interactive
