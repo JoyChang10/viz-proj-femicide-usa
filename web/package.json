@@ -7,6 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
+    "prepare:palette": "python theme.py",
     "prepare:data": "python scripts/prepare_data.py",
     "test:data": "python -m unittest discover -s scripts -p test_*.py",
     "test:e2e": "playwright test"

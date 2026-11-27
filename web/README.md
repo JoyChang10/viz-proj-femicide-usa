@@ -33,11 +33,17 @@ failure leaves the prepared geographic and profile data available.
 
 ## Brand palette
 
-Edit `BRAND_COLORS` in [theme.py](../theme.py), then run `python theme.py`
-from the repository root. Commit both the Python file and the generated
-`web/src/palette.css`. The website imports the generated CSS, so its build
-still only needs Node.js. Map count colors are defined separately so brand
-changes do not change how the map encodes counts.
+From `web/`, edit `BRAND_COLORS` in [theme.py](theme.py), then run:
+
+```sh
+npm run prepare:palette
+npm run build
+```
+
+Commit both `theme.py` and the generated `src/palette.css`. Use `var(--gold)`,
+`var(--teal)`, `var(--near-black)`, and `var(--white)` in website styles.
+Palette generation requires Python. The site build uses the committed CSS and
+only needs Node.js. Map count colors are defined separately.
 
 ## Map and case navigation
 
